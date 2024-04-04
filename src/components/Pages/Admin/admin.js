@@ -1,19 +1,10 @@
 import * as React from "react";
-import { fetchUtils, Admin, Resource } from "react-admin";
-import simpleRestProvider from "ra-data-simple-rest";
-import { listProducts, editProduct, createProduct } from "./categories";
-import axios from "../../../setup/CustomAxios";
+import { Admin, Resource } from "react-admin";
+import { ListProducts, editProduct, CreateProduct } from "./categories";
 import { AppBar, Layout } from "react-admin";
 import { useNavigate } from "react-router-dom";
+import { dataProvider } from "./dataProvider";
 
-const httpClient = (url, options = {}) => {
-  if (!options.headers) {
-    options.headers = new Headers({ Accept: "application/json" });
-  }
-  const token = localStorage.getItem("user");
-  options.headers.set("Authorization", `Bearer ${token}`);
-  return fetchUtils.fetchJson(url, options);
-};
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -38,14 +29,14 @@ export default function AdminPage() {
     <div>
       <Admin
         basename="/admin"
-        dataProvider={simpleRestProvider("http://localhost:8080", httpClient)}
+        dataProvider={dataProvider}
         layout={MyLayout}
       >
         <Resource
           name="employees"
-          list={listProducts}
+          list={ListProducts}
           edit={editProduct}
-          create={createProduct}
+          create={CreateProduct}
         />
       </Admin>
     </div>
